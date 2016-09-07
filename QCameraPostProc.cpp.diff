@@ -1,0 +1,32 @@
+diff --git a/QCamera2/HAL/QCamera2HWI.cpp b/QCamera2/HAL/QCamera2HWI.cpp
+index b064b78..0883d25 100644
+--- a/QCamera2/HAL/QCamera2HWI.cpp
++++ b/QCamera2/HAL/QCamera2HWI.cpp
+@@ -49,11 +49,11 @@
+ 
+ #define MAP_TO_DRIVER_COORDINATE(val, base, scale, offset) \
+   ((int32_t)val * (int32_t)scale / (int32_t)base + (int32_t)offset)
+-#define CAMERA_MIN_STREAMING_BUFFERS     3
+-#define EXTRA_ZSL_PREVIEW_STREAM_BUF     2
++#define CAMERA_MIN_STREAMING_BUFFERS     5// 3
++#define EXTRA_ZSL_PREVIEW_STREAM_BUF     4// 2
+ #define CAMERA_MIN_JPEG_ENCODING_BUFFERS 2
+ #define CAMERA_MIN_VIDEO_BUFFERS         9
+-#define CAMERA_MIN_CALLBACK_BUFFERS      5
++#define CAMERA_MIN_CALLBACK_BUFFERS      8// 5
+ #define CAMERA_LONGSHOT_STAGES           4
+ #define CAMERA_MIN_VIDEO_BATCH_BUFFERS   6
+ #define CAMERA_ISP_PING_PONG_BUFFERS     2
+diff --git a/QCamera2/HAL/QCameraPostProc.cpp b/QCamera2/HAL/QCameraPostProc.cpp
+index b9989e8..ea71bca 100644
+--- a/QCamera2/HAL/QCameraPostProc.cpp
++++ b/QCamera2/HAL/QCameraPostProc.cpp
+@@ -2628,6 +2628,8 @@ int32_t QCameraPostProcessor::encodeData(qcamera_jpeg_data_t *jpeg_job_data,
+         if (thumb_stream == NULL) {
+             // need jpeg thumbnail, but no postview/preview stream exists
+             // we use the main stream/frame to encode thumbnail
++
++			//ALOGE(" %s : No thumbnail stream using main image. thumb_stread %d snapshot flip %d", __func__,thumb_stream,m_parent->m_nSnapshotFlip); 
+             thumb_stream = main_stream;
+             thumb_frame = main_frame;
+         }
